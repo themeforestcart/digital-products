@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Products Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .product-video {
+            width: 100%;
+            height: 220px;
+            background: #000;
+        }
+
+        .product-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--light);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+
+        .product-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .product-footer {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+        }
+
+        .no-results h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🚀 Digital Products Showcase</h1>
+        <p>Premium Templates, Themes, Scripts & Plugins for Developers</p>
+    </header>
+
+    <div class="container">
+        <div class="filters">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search products...">
+            </div>
+            <div class="category-filter">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="template">Templates</button>
+                <button class="category-btn" data-category="theme">Themes</button>
+                <button class="category-btn" data-category="script">Scripts</button>
+                <button class="category-btn" data-category="plugin">Plugins</button>
+            </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+        <div class="no-results" id="noResults" style="display: none;">
+            <h2>No products found</h2>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Digital Products Showcase. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Products data - Add your products here
+        const products = [
+            {
+                id: 1,
+                title: "Modern Dashboard Template",
+                description: "A beautiful and responsive admin dashboard template built with HTML5, CSS3, and JavaScript. Perfect for web applications and SaaS products.",
+                category: "template",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
+                video: "",
+                buyLink: "https://gumroad.com/your-product",
+                demoLink: "https://your-demo-link.com"
+            },
+            {
+                id: 2,
+                title: "WordPress Blog Theme",
+                description: "Clean and minimalist WordPress theme for bloggers and content creators. SEO optimized with fast loading times.",
+                category: "theme",
+                image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=500&h=300&fit=crop",
+                video: "",
+                buyLink: "https://gumroad.com/your-product",
+                demoLink: "https://your-demo-link.com"
+            },
+            {
+                id: 3,
+                title: "Python Web Scraper",
+                description: "Powerful Python script for web scraping with support for dynamic content, proxy rotation, and data export to CSV/JSON.",
+                category: "script",
+                image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=300&fit=crop",
+                video: "",
+                buyLink: "https://gumroad.com/your-product",
+                demoLink: "https://github.com/your-repo"
+            },
+            {
+                id: 4,
+                title: "E-commerce Landing Page",
+                description: "High-converting landing page template for online stores. Mobile-first design with smooth animations and CTAs.",
+                category: "template",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=300&fit=crop",
+                video: "",
+                buyLink: "https://gumroad.com/your-product",
+                demoLink: "https://your-demo-link.com"
+            },
+            {
+                id: 5,
+                title: "Contact Form Plugin",
+                description: "Lightweight WordPress plugin for creating beautiful contact forms with spam protection and email notifications.",
+                category: "plugin",
+                image: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=500&h=300&fit=crop",
+                video: "",
+                buyLink: "https://gumroad.com/your-product",
+                demoLink: "https://your-demo-link.com"
+            },
+            {
+                id: 6,
+                title: "Portfolio Website Template",
+                description: "Stunning portfolio template for designers and creatives. Showcase your work with style and elegance.",
+                category: "template",
+                image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=500&h=300&fit=crop",
+                video: "",
+                buyLink: "https://gumroad.com/your-product",
+                demoLink: "https://your-demo-link.com"
+            }
+        ];
+
+        let currentCategory = 'all';
+        let searchTerm = '';
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filtered = products.filter(product => {
+                const matchesCategory = currentCategory === 'all' || product.category === currentCategory;
+                const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                     product.description.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            grid.innerHTML = filtered.map(product => `
+                <div class="product-card">
+                    ${product.video ? 
+                        `<video class="product-video" controls>
+                            <source src="${product.video}" type="video/mp4">
+                        </video>` :
+                        `<img class="product-image" src="${product.image}" alt="${product.title}">`
+                    }
+                    <div class="product-content">
+                        <span class="product-category">${product.category}</span>
+                        <h3 class="product-title">${product.title}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-footer">
+                            <a href="${product.buyLink}" target="_blank" class="btn btn-primary">Get Now</a>
+                            ${product.demoLink ? 
+                                `<a href="${product.demoLink}" target="_blank" class="btn btn-secondary">Live Demo</a>` : 
+                                ''
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Category filter
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                renderProducts();
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderProducts();
+        });
+
+        // Initial render
+        renderProducts();
+    </script>
+</body>
+</html>
